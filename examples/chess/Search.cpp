@@ -99,22 +99,27 @@ auto Search::ListPlacesKingCannotGo(WorldState& state, PieceColor turn) -> unord
 
 pair<int, int> minMax(int currentDepth, int index, bool getMax, int maxDepth, vector<MoveState>& moveStates, WorldState& state)
 {
+    string currentTurn = (state.GetTurn() == PieceColor::White) ? "White" : "Black";
+
+    if (King::IsInCheck(state, state.GetTurn()) > 0)
+        cout << "KING IS IN CHECK FOR COLOR: " << currentTurn << endl;
+
     // Get all moves
     auto moves = Search::ListMoves(state, state.GetTurn());
 
     if (currentDepth == maxDepth)
     {
+        //Get the score of where we are
         int score = Heuristics::MaterialScore(&state);
+
+        //Push back the score and move state
         moveStates.push_back({state, {moves[index]}, score});
 
-        cout << "Score: " << score << endl;
-        cout << "Current Depth: " << currentDepth << endl;
-        cout << "Current Index: " << index << endl;
-        cout << "--------\n";
-
+        // Return the pair of score and index
         return std::make_pair(score, index);
     }
 
+    //For every move
     for (size_t i = 0; i < moves.size(); i++)
     {
         WorldState newState = state;                   // Get the staete
@@ -134,10 +139,7 @@ Move Search::NextMove(WorldState& state)
     // generate states
     vector<MoveState> moveStates;
 
-    pair<int, int> pair = minMax(0, 0, false, 1, moveStates, state);
-
-    cout << moveStates.size() << endl;
-    //cout << "Index: " << pair.second << " Score: " << pair.first << endl;
+    pair<int, int> pair = minMax(0, 0, true, 4, moveStates, state);
 
     for (auto state : moveStates)
     {
