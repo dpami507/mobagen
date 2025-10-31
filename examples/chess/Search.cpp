@@ -18,6 +18,7 @@ auto Search::ListMoves(WorldState& state, PieceColor turn) -> std::vector<Move>
             // continue if it is not a valid piece
             if (p.Piece() == PieceType::NONE || turn != p.Color())
                 continue;
+
             vector<Move> toAdd;
             // todo: improve this switch
             switch (p.Piece())
