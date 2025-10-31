@@ -17,42 +17,28 @@ int Heuristics::MaterialScore(WorldState* state) {
       int moves;
       switch (piece.Piece()) {
         case PieceType::King:
-          pieceScore += 1000;                                        // piece value
-          pieceScore += King::AttackMoves(*state, location).size();  // mobility
-          pieceScore += distanceToCenter(location);
-          pieceScore -= King::IsInCheck(*state, piece.Color()) * 10;
-          // todo: king safety, check, draw and mate
+          pieceScore += 20000;
+          pieceScore += PSQT_king[line * 8 + column];
           break;
         case PieceType::Queen:
-          pieceScore += 90;                                           // piece value
-          pieceScore += Queen::AttackMoves(*state, location).size();  // mobility
-          pieceScore += distanceToCenter(location);
+          pieceScore += 900;
+          pieceScore += PSQT_queen[line * 8 + column];
           break;
         case PieceType::Rook:
-          pieceScore += 50;                                          // piece value
-          pieceScore += Rook::AttackMoves(*state, location).size();  // mobility
-          pieceScore += distanceToCenter(location);
+          pieceScore += 500;
+          pieceScore += PSQT_rook[line * 8 + column];
           break;
         case PieceType::Knight:
-          pieceScore += 35;                                            // piece value
-          pieceScore += Knight::AttackMoves(*state, location).size();  // mobility
-          pieceScore += distanceToCenter(location);
+          pieceScore += 320;
+          pieceScore += PSQT_knight[line * 8 + column];
           break;
         case PieceType::Bishop:
-          pieceScore += 30;                                            // piece value
-          pieceScore += Bishop::AttackMoves(*state, location).size();  // mobility
-          pieceScore += distanceToCenter(location);
+          pieceScore += 330;
+          pieceScore += PSQT_bishop[line * 8 + column];
           break;
         case PieceType::Pawn:
-          pieceScore += 10;                                      // piece value
-          moves = Pawn::PossibleMoves(*state, location).size();  // mobility
-          pieceScore += moves;
-          pieceScore += distanceToCenter(location);
-          pieceScore += Pawn::AttackMoves(*state, location).size();
-          pieceScore += Pawn::CoverMoves(*state, location).size();
-          if (moves == 0) pieceScore -= 2;                          // blocked
-          pieceScore -= 2 * Pawn::CountDoubles(*state, location);   // doubled
-          if (Pawn::IsIsolated(*state, location)) pieceScore -= 1;  // isolation
+          pieceScore += 100;
+          pieceScore += PSQT_pawn[line * 8 + column];
           break;
         default:
           continue;
