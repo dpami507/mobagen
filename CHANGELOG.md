@@ -1,3 +1,207 @@
+## [1.20.1](https://github.com/InfiniBrains/mobagen/compare/v1.20.0...v1.20.1) (2026-08-31)
+
+
+### Bug Fixes
+
+* remove some leftovers from the transition to webgpu ([4ac25c9](https://github.com/InfiniBrains/mobagen/commit/4ac25c9b18c9561935e054dc721d65eff153d3a2))
+
+# [1.20.0](https://github.com/InfiniBrains/mobagen/compare/v1.19.5...v1.20.0) (2026-08-31)
+
+
+### Bug Fixes
+
+* add delta time ([5cdd5e7](https://github.com/InfiniBrains/mobagen/commit/5cdd5e74cda68823b0fb40b87beddbb26a66057d))
+* flocking rules ([70ddfa7](https://github.com/InfiniBrains/mobagen/commit/70ddfa7911c9ed8f2bd820e604b0f52bf44eb5d6))
+* **flocking:** normalize FLOCKING_TESTS_DIR to forward slashes for MSVC ([80de23d](https://github.com/InfiniBrains/mobagen/commit/80de23d33837744af50869b99b7aca43fb690183))
+
+
+### Features
+
+* **flocking:** flocking-tests runner driving existing rules with pass-percentage report ([0274107](https://github.com/InfiniBrains/mobagen/commit/02741070569506fdcb47bfc2c86dfc9d897fe16e))
+
+## [1.19.5](https://github.com/InfiniBrains/mobagen/compare/v1.19.4...v1.19.5) (2026-08-28)
+
+
+### Bug Fixes
+
+* **dawn:** fail fast with actionable message when python3/jinja2 missing ([a661bf5](https://github.com/InfiniBrains/mobagen/commit/a661bf54127abbc75618ca6e067edabc1ca4f841))
+
+## [1.19.4](https://github.com/InfiniBrains/mobagen/compare/v1.19.3...v1.19.4) (2026-08-28)
+
+
+### Bug Fixes
+
+* **build:** reject non-visual-studio toolchains on windows with actionable error ([62a0018](https://github.com/InfiniBrains/mobagen/commit/62a0018d820e93e7479f0e29085f607c49d45b65))
+
+## [1.19.3](https://github.com/InfiniBrains/mobagen/compare/v1.19.2...v1.19.3) (2026-08-28)
+
+
+### Bug Fixes
+
+* sdl dependency ([f4955dc](https://github.com/InfiniBrains/mobagen/commit/f4955dc9dd46e8fb25cd5bb1b80fb7ba4407ca66))
+
+## [1.19.2](https://github.com/InfiniBrains/mobagen/compare/v1.19.1...v1.19.2) (2026-08-27)
+
+
+### Bug Fixes
+
+* **ci:** cmake-format external/dawn.cmake ([8edb1c1](https://github.com/InfiniBrains/mobagen/commit/8edb1c13fdacc8d331a5d4b37865e0c2a5e88400))
+
+## [1.19.1](https://github.com/InfiniBrains/mobagen/compare/v1.19.0...v1.19.1) (2026-08-27)
+
+
+### Bug Fixes
+
+* **dawn:** deploy d3dcompiler_47.dll beside binaries on windows ([d5eb512](https://github.com/InfiniBrains/mobagen/commit/d5eb512bf85d8585198bd4d4b505ed2b8837cc34))
+
+# [1.19.0](https://github.com/InfiniBrains/mobagen/compare/v1.18.17...v1.19.0) (2026-08-27)
+
+
+### Features
+
+* **chess:** render real piece images instead of letters ([15e05d3](https://github.com/InfiniBrains/mobagen/commit/15e05d3abb82a01da71f4dab2941b70e9ee18504))
+
+## [1.18.17](https://github.com/InfiniBrains/mobagen/compare/v1.18.16...v1.18.17) (2026-08-27)
+
+
+### Bug Fixes
+
+* **jobs:** drop stale pthread/PROXY_TO_PTHREAD flags for single-threaded web builds ([60aaa0e](https://github.com/InfiniBrains/mobagen/commit/60aaa0e0aae5aebbc5477f52a170c061ed765518))
+
+## [1.18.16](https://github.com/InfiniBrains/mobagen/compare/v1.18.15...v1.18.16) (2026-08-27)
+
+
+### Bug Fixes
+
+* **web:** single-threaded wasm build + per-frame yield instead of pthreads/SharedArrayBuffer ([7b2f3c9](https://github.com/InfiniBrains/mobagen/commit/7b2f3c9a19509e6d4c6c0d248c5295feb28d6504))
+
+## [1.18.15](https://github.com/InfiniBrains/mobagen/compare/v1.18.14...v1.18.15) (2026-08-27)
+
+
+### Bug Fixes
+
+* **web:** enable cross-origin isolation for SharedArrayBuffer via coi-serviceworker ([b5ed557](https://github.com/InfiniBrains/mobagen/commit/b5ed557b3436d05a56ed1713d4141fa769efea1e))
+
+## [1.18.14](https://github.com/InfiniBrains/mobagen/compare/v1.18.13...v1.18.14) (2026-08-27)
+
+
+### Bug Fixes
+
+* **readme:** point Pages links at the live site URL (gameguild-gg.github.io) ([b6e9969](https://github.com/InfiniBrains/mobagen/commit/b6e996994fd80b2551f70ba2cd3192adb9d831da))
+
+## [1.18.13](https://github.com/InfiniBrains/mobagen/compare/v1.18.12...v1.18.13) (2026-08-27)
+
+
+### Bug Fixes
+
+* **catchthecat:** parenthesize std::min call (windows.h min macro clash) ([fbe29ae](https://github.com/InfiniBrains/mobagen/commit/fbe29ae1019c52af0cd6376e8a258d70380e8a66))
+
+## [1.18.12](https://github.com/InfiniBrains/mobagen/compare/v1.18.11...v1.18.12) (2026-08-27)
+
+
+### Bug Fixes
+
+* **apps:** include <string> where used as a type (libstdc++ strictness sweep) ([e94abeb](https://github.com/InfiniBrains/mobagen/commit/e94abebe56bc837c17253cfdacde2257dac33746))
+
+## [1.18.11](https://github.com/InfiniBrains/mobagen/compare/v1.18.10...v1.18.11) (2026-08-27)
+
+
+### Bug Fixes
+
+* **chess:** include <string> in WorldState.h (libstdc++ no longer leaks it via <vector>) ([828b8a3](https://github.com/InfiniBrains/mobagen/commit/828b8a377c9aa5a501df872359312bb688f1cf72))
+
+## [1.18.10](https://github.com/InfiniBrains/mobagen/compare/v1.18.9...v1.18.10) (2026-08-27)
+
+
+### Bug Fixes
+
+* **ci:** clang-format MoBaGenActivity.java (git-clang-format checks java too) ([991b39a](https://github.com/InfiniBrains/mobagen/commit/991b39afb1d600c7a275fc8e7522d7f9c54d5dd0))
+
+## [1.18.9](https://github.com/InfiniBrains/mobagen/compare/v1.18.8...v1.18.9) (2026-08-27)
+
+
+### Bug Fixes
+
+* **ci:** clang-format 14.0.6 sweep over drifted C++ sources, add xcb dev deps for Dawn ([98f536a](https://github.com/InfiniBrains/mobagen/commit/98f536a914decacff63d72ef28329c604c45f5a9))
+
+## [1.18.8](https://github.com/InfiniBrains/mobagen/compare/v1.18.7...v1.18.8) (2026-08-27)
+
+
+### Bug Fixes
+
+* **ci:** cmake-format vendored external/cpm.cmake (tracked by check-format) ([2506cf7](https://github.com/InfiniBrains/mobagen/commit/2506cf7c7bb736cdce5824435377dd8417132122))
+
+## [1.18.7](https://github.com/InfiniBrains/mobagen/compare/v1.18.6...v1.18.7) (2026-08-27)
+
+
+### Bug Fixes
+
+* **ci:** cmake-format all tracked CMakeLists, cap Test build parallelism ([876e3b8](https://github.com/InfiniBrains/mobagen/commit/876e3b8639185ab6b979cb40a678eefcf2a9a392))
+
+## [1.18.6](https://github.com/InfiniBrains/mobagen/compare/v1.18.5...v1.18.6) (2026-08-27)
+
+
+### Bug Fixes
+
+* **ci:** pthread for web shared-memory link, pin windows-2022 release runner, cmake-format ([319717f](https://github.com/InfiniBrains/mobagen/commit/319717fc2d639d35d59dcc75c0cd50f98d53052f))
+
+## [1.18.5](https://github.com/InfiniBrains/mobagen/compare/v1.18.4...v1.18.5) (2026-08-27)
+
+
+### Bug Fixes
+
+* **ci:** freetype source fallback for Windows, full SDL3 X11 dev deps on Linux ([0a6c2b8](https://github.com/InfiniBrains/mobagen/commit/0a6c2b893f551b86bd175e03b1dbd15bab9799e6))
+
+## [1.18.4](https://github.com/InfiniBrains/mobagen/compare/v1.18.3...v1.18.4) (2026-08-27)
+
+
+### Bug Fixes
+
+* **ci:** install X11 dev deps in style workflow, pin valid ghaction-github-pages tag ([e3e8a67](https://github.com/InfiniBrains/mobagen/commit/e3e8a673636f2394ae5640925b4c2e3ebaed5565))
+
+## [1.18.3](https://github.com/InfiniBrains/mobagen/compare/v1.18.2...v1.18.3) (2026-08-27)
+
+
+### Bug Fixes
+
+* **ci:** repair failing CI workflows and broken README badges ([c2a4e86](https://github.com/InfiniBrains/mobagen/commit/c2a4e86169d1b038c16f983edc55db586d6e8faf))
+
+## [1.18.2](https://github.com/InfiniBrains/mobagen/compare/v1.18.1...v1.18.2) (2026-06-11)
+
+
+### Bug Fixes
+
+* **rmlui:** fix font renderer ([c27eec1](https://github.com/InfiniBrains/mobagen/commit/c27eec181479431f8456f30c0e03d1b94268badb))
+
+## [1.18.1](https://github.com/InfiniBrains/mobagen/compare/v1.18.0...v1.18.1) (2026-06-10)
+
+
+### Bug Fixes
+
+* folder restructure ([3db662c](https://github.com/InfiniBrains/mobagen/commit/3db662cde382f7fc7bf5d5355625ff4324098a86))
+
+# [1.18.0](https://github.com/InfiniBrains/mobagen/compare/v1.17.0...v1.18.0) (2026-06-09)
+
+
+### Bug Fixes
+
+* centering ui ([a9b2e73](https://github.com/InfiniBrains/mobagen/commit/a9b2e73565ea59dcc0ec490292c011d4f1768e4a))
+* ios build pipeline ([d8cd23c](https://github.com/InfiniBrains/mobagen/commit/d8cd23ca0a1790be3e02c0c94520ed17795f6052))
+* **rmlui:** dpi resilience for webgpu ([bc21e9b](https://github.com/InfiniBrains/mobagen/commit/bc21e9b138c1e497d1837510b341535d1a0798cc))
+* scaling issues ([1ca7ca2](https://github.com/InfiniBrains/mobagen/commit/1ca7ca29ab6774459a986ff6e10604f0013cefde))
+
+
+### Features
+
+* add rmlui - wip ([05ef8d6](https://github.com/InfiniBrains/mobagen/commit/05ef8d6a4569367a545c617275f47222afeee6d1))
+
+# [1.17.0](https://github.com/InfiniBrains/mobagen/compare/v1.16.0...v1.17.0) (2026-05-27)
+
+
+### Features
+
+* change default renderer based on WebGPU and provides a new Rederer2D ([0e20699](https://github.com/InfiniBrains/mobagen/commit/0e206996e8d7d6574985436fa6fbc7ff2289a56e))
+
 # [1.16.0](https://github.com/InfiniBrains/mobagen/compare/v1.15.0...v1.16.0) (2025-10-06)
 
 

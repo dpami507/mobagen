@@ -16,13 +16,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: "**/cpm_modules"
           key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
+
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential cmake \
+            mesa-common-dev libgl1-mesa-dev libx11-dev mesa-utils libgl-dev \
+            libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxss-dev libxtst-dev libxext-dev libxfixes-dev libxkbcommon-dev libxcb1-dev libx11-xcb-dev
 
       - name: Install format dependencies
         run: pip3 install clang-format==14.0.6 cmake_format==0.6.11 pyyaml
