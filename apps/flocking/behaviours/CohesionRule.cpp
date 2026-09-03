@@ -23,7 +23,7 @@ glm::vec2 CohesionRule::computeForce(const std::vector<BoidView>& neighborhood, 
 
         // calc force
         float dist = glm::length(avgPosition - boid.position);
-        cohesionForce = dir * dist * this->weight; // Weight multiplication because its weak
+        cohesionForce = dir * dist;
     }
 
   // end solution
