@@ -1,6 +1,7 @@
 #include "WindRule.h"
 #include "imgui.h"
 #include <cmath>
+#include <iostream>
 
 glm::vec2 WindRule::computeForce(const std::vector<BoidView>& neighborhood, const BoidView& boid) {
   // std::cos and std::sin return the cosine and sine of an angle in radians, respectively.
@@ -9,7 +10,7 @@ glm::vec2 WindRule::computeForce(const std::vector<BoidView>& neighborhood, cons
   // begin solution
   glm::vec2 dir = glm::normalize(glm::vec2(cos(windAngle), sin(windAngle)));
 
-  return dir * this->weight;
+  return dir;
   // end solution
 }
 

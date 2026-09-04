@@ -23,6 +23,9 @@ glm::vec2 SeparationRule::computeForce(const std::vector<BoidView>& neighborhood
         force -= glm::normalize(offset); // dir (subtract to go the other way)
         dist = glm::length(offset);      // dist
 
+        if (dist <= 0.0001f)
+            dist = 0.0001f;
+
         force *= (desiredMinimalDistance / dist);
 
         separatingForce += force;
