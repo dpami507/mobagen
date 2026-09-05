@@ -5,12 +5,69 @@
 
 glm::vec2 BoundedAreaRule::computeForce(const std::vector<BoidView>& neighborhood, const BoidView& boid) {
   glm::vec2 force(0.f);
+  glm::vec2 tempForce(0.f);
+  float strength = 0.f;
+
   ImVec2 displaySize = ImGui::GetIO().DisplaySize;
   // desiredDistance is the distance from the borders that the boids should try to maintain. 
 
   // begin solution
+  if (boid.position.x < desiredDistance)
+  {
+      // Apply force right
+      tempForce = glm::vec2(1.f, 0.f);
 
-  // end solution
+      float dist = boid.position.x;
+      if (dist <= 0.0001f)
+          dist = 0.0001f;
+
+      strength = desiredDistance / dist;
+      tempForce *= strength;
+
+      force += tempForce;
+  }
+  if (boid.position.x > displaySize.x - desiredDistance)
+  {
+      // Apply force left
+      tempForce = glm::vec2(-1.f, 0.f);
+
+      float dist = (displaySize.x - boid.position.x);
+      if (dist <= 0.0001f)
+          dist = 0.0001f;
+
+      strength = desiredDistance / dist;
+      tempForce *= strength;
+
+      force += tempForce;
+  }
+  if (boid.position.y < desiredDistance)
+  {
+      // Apply force down
+      tempForce = glm::vec2(0.f, 1.f);
+
+      float dist = boid.position.y;
+      if (dist <= 0.0001f)
+          dist = 0.0001f;
+
+      strength = desiredDistance / dist;
+      tempForce *= strength;
+
+      force += tempForce;
+  }
+  if (boid.position.y > displaySize.y - desiredDistance)
+  {
+      // Apply force up
+      tempForce = glm::vec2(0.f, -1.f);
+
+      float dist = (displaySize.y - boid.position.y);
+      if (dist <= 0.0001f)
+          dist = 0.0001f;
+
+      strength = desiredDistance / dist;
+      tempForce *= strength;
+
+      force += tempForce;
+  }
 
   return force;
 }
