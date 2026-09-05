@@ -27,6 +27,10 @@ glm::vec2 MouseInfluenceRule::computeForce(const std::vector<BoidView>& neighbor
           newForce -= glm::normalize(offset); // dir (subtract to go the other way)
 
       dist = glm::length(offset);             // dist
+      // Deal with low numbers
+      if (dist <= 0.0001f)
+          dist = 0.0001f;
+
       newForce *= (1.f / dist) * this->weight; // Weight multiplication because its weak
 
       force += newForce;
