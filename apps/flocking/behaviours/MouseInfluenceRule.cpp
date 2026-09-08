@@ -22,12 +22,16 @@ glm::vec2 MouseInfluenceRule::computeForce(const std::vector<BoidView>& neighbor
       offset = boid.position - mousePos;
 
       if (isRepulsive)
-          newForce += glm::normalize(offset); // dir (add to go the other way)
+          newForce += glm::normalize(offset); // dir (subtract to go the other way)
       else
-          newForce -= glm::normalize(offset); // dir (subtract to go to the pointer)
+          newForce -= glm::normalize(offset); // dir (subtract to go the other way)
 
       dist = glm::length(offset);             // dist
-      newForce *= (2.f / dist) * this->weight; // Weight multiplication because its weak
+      // Deal with low numbers
+      if (dist <= 0.0001f)
+          dist = 0.0001f;
+
+      newForce *= (1.f / dist) * this->weight; // Weight multiplication because its weak
 
       force += newForce;
   }

@@ -9,22 +9,28 @@ glm::vec2 CohesionRule::computeForce(const std::vector<BoidView>& neighborhood, 
 
   // begin solution
     glm::vec2 avgPosition = glm::vec2(0);
+
+    if (neighborhood.empty())
+        return cohesionForce;
+
     for (auto b : neighborhood)
     {
         avgPosition += b.position;
     }
-    if (!neighborhood.empty())
-    {
-        // avg posiion
-        avgPosition /= neighborhood.size();
 
-        // get direction to the position
-        glm::vec2 dir = glm::normalize(avgPosition - boid.position);
+    // avg posiion
+    avgPosition /= neighborhood.size();
 
-        // calc force
-        float dist = glm::length(avgPosition - boid.position);
-        cohesionForce = dir * dist;
-    }
+    // get offset
+    glm::vec2 offset = avgPosition - boid.position;
+
+    // saftey to make sure distance is a meaningful amount
+    float dist = glm::length(offset);
+    if (dist <= 0.001f)
+        return cohesionForce;
+
+    // normalize to get the direction
+    cohesionForce = glm::normalize(offset);
 
   // end solution
 
