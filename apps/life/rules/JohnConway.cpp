@@ -24,9 +24,6 @@ class Underpopulation : public Condition {
 public:
   bool Test(const AgentContext& context) override {
     // todo: implement the underpopulation condition
-    if (!context.isAlive)
-      return context.isAlive;
-
     if (context.aliveNeighbors <= 1)
     {
         return false;
@@ -39,9 +36,6 @@ class Overpopulation : public Condition {
 public:
   bool Test(const AgentContext& context) override {
     // todo: implement the overpopulation condition
-    if (!context.isAlive)
-        return context.isAlive;
-
     if (context.aliveNeighbors >= 4)
     {
         return false;
@@ -54,10 +48,7 @@ class Reproduction : public Condition {
 public:
   bool Test(const AgentContext& context) override {
     // todo: implement the reproduction condition
-    if (context.isAlive)
-        return context.isAlive;
-
-    if (context.aliveNeighbors >= 3)
+    if (!context.isAlive && context.aliveNeighbors == 3)
     {
         return true;
     }
@@ -72,8 +63,7 @@ public:
     // hint:
     //   use the context.world.SetNext() to set the next state of the cell to dead
     //   use the context.position to get the current cell's position
-
-    context.world.SetNext(context.position, !context.isAlive);
+    context.world.SetNext(context.position, false);
   }
 };
 
@@ -81,7 +71,7 @@ class BornAction : public Action {
 public:
   void Execute(const AgentContext& context) override {
     // see hints in DieAction
-      context.world.SetNext(context.position, !context.isAlive);
+      context.world.SetNext(context.position, true);
   }
 };
 
@@ -89,7 +79,10 @@ class StayAliveAction : public Action {
 public:
   void Execute(const AgentContext& context) override {
     // see hints in DieAction
-      context.world.SetNext(context.position, context.isAlive);
+    if (context.isAlive && (context.aliveNeighbors == 2 || context.aliveNeighbors == 3))
+    {
+        context.world.SetNext(context.position, true);
+    }
   }
 };
 
@@ -97,7 +90,10 @@ class StayDeadAction : public Action {
 public:
   void Execute(const AgentContext& context) override {
     // see hints in DieAction
-      context.world.SetNext(context.position, context.isAlive);
+    if (!context.isAlive)
+    {
+        context.world.SetNext(context.position, false);
+    }
   }
 };
 }  // namespace conway
@@ -123,7 +119,6 @@ JohnConway::JohnConway() {
   dead->AddTransition(std::make_shared<Reproduction>(), alive, {born});
   // note: log instead of throw - the constructor runs at app startup and at
   // every fixture load; throwing here would kill the process before it runs.
-  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "JohnConway: transitions and actions for alive and dead states not implemented yet");
 
   // end solution
 }
@@ -158,11 +153,11 @@ int JohnConway::CountNeighbors(World& world, Point2D point) {
   //   world.Get({point.x + dx, point.y + dy}) wraps around the borders (toroidal)
   // begin solution
 
-    int minX = point.x - 1;
-    int maxX = point.x + 1;
+    int minX = - 1;
+    int maxX = 1;
 
-    int minY = point.y - 1;
-    int maxY = point.y + 1;
+    int minY = - 1;
+    int maxY = + 1;
 
     int count = 0;
     for (int dx = minX; dx <= maxX; dx++)
@@ -172,7 +167,7 @@ int JohnConway::CountNeighbors(World& world, Point2D point) {
             if (dx == 0 && dy == 0)
                 continue;
 
-            if (world.Get(Point2D(dx, dy)))
+            if (world.Get(Point2D(dx + point.x, dy + point.y)))
                 count++;
         }
     }
