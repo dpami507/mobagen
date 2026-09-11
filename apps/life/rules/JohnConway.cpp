@@ -26,9 +26,9 @@ public:
     // todo: implement the underpopulation condition
     if (context.aliveNeighbors <= 1)
     {
-        return false;
+        return true;
     }
-    return context.isAlive;
+    return false;
   }
 };
 
@@ -38,9 +38,9 @@ public:
     // todo: implement the overpopulation condition
     if (context.aliveNeighbors >= 4)
     {
-        return false;
+        return true;
     }
-    return context.isAlive;
+    return false;
   }
 };
 
@@ -48,11 +48,11 @@ class Reproduction : public Condition {
 public:
   bool Test(const AgentContext& context) override {
     // todo: implement the reproduction condition
-    if (!context.isAlive && context.aliveNeighbors == 3)
+    if (context.aliveNeighbors == 3)
     {
         return true;
     }
-    return context.isAlive;
+    return false;
   }
 };
 
@@ -79,10 +79,7 @@ class StayAliveAction : public Action {
 public:
   void Execute(const AgentContext& context) override {
     // see hints in DieAction
-    if (context.isAlive && (context.aliveNeighbors == 2 || context.aliveNeighbors == 3))
-    {
-        context.world.SetNext(context.position, true);
-    }
+    context.world.SetNext(context.position, true);
   }
 };
 
@@ -90,10 +87,7 @@ class StayDeadAction : public Action {
 public:
   void Execute(const AgentContext& context) override {
     // see hints in DieAction
-    if (!context.isAlive)
-    {
-        context.world.SetNext(context.position, false);
-    }
+    context.world.SetNext(context.position, false);
   }
 };
 }  // namespace conway
