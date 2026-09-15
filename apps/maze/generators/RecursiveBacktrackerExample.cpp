@@ -19,13 +19,16 @@
 //      (World::SetNorth/SetEast/SetSouth/SetWest with false).
 
 void RecursiveBacktrackerExample::Clear(World* world) {
-  // todo: reset the walk
-  // hint:
-  //   clear visited and the path stack, then start the walk at the
-  //   top-left cell in formal units: stack.push_back({0, 0})
-  // begin solution
+	// todo: reset the walk
+	// hint:
+	//   clear visited and the path stack, then start the walk at the
+	//   top-left cell in formal units: stack.push_back({0, 0})
+	// begin solution
 
-  // end solution
+	visited.clear();
+    stack.push_back({0, 0});
+
+	// end solution
 }
 
 bool RecursiveBacktrackerExample::Step(World* w) {
