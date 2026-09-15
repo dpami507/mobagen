@@ -53,18 +53,47 @@ bool RecursiveBacktrackerExample::Step(World* w) {
   //   return true while there is still work (stack not empty after the move)
   // begin solution
 
-  // end solution
-  return false;
+	if (stack.empty())
+      return false;
+
+	// 1. mark it visited;
+	Point2D point = stack.front();
+    auto m = std::map<int, bool>();
+    m.insert({point.y, true});
+    visited.insert({point.x, m});
+
+	// 2. list its visitable neighbors with getVisitables
+	auto visitable = getVisitables(w, point);
+    if (visitable.size() <= 0) // 3. none -> dead end: pop the stack (backtrack);
+        return false;
+	else if (visitable.size() == 1) // 4. exactly one -> move to it, do not consume a random number;
+	{
+        stack.push_back(visitable[0]);
+	}
+	else // 5. two or more -> consume SeededRandom::next() and pick
+	{
+        int index = SeededRandom::next() % visitable.size();
+        Point2D newPoint = visitable[index];
+        stack.push_back(newPoint);
+	}
+
+	return true;
 }
 
 std::vector<Point2D> RecursiveBacktrackerExample::getVisitables(World* w, const Point2D& formalPoint) {
-  // todo: list the unvisited neighbors of formalPoint, in clockwise order
-  // hint:
-  //   candidates in order: UP {x, y-1}, RIGHT {x+1, y}, DOWN {x, y+1}, LEFT {x-1, y}
-  //   keep a candidate only if it is inside the grid
-  //   (0 <= x < w->GetWidth(), 0 <= y < w->GetHeight()) and not visited
-  // begin solution
+	// todo: list the unvisited neighbors of formalPoint, in clockwise order
+	// hint:
+	//   candidates in order: UP {x, y-1}, RIGHT {x+1, y}, DOWN {x, y+1}, LEFT {x-1, y}
+	//   keep a candidate only if it is inside the grid
+	//   (0 <= x < w->GetWidth(), 0 <= y < w->GetHeight()) and not visited
+	// begin solution
 
-  // end solution
-  return {};
+	std::vector<Point2D> returnVisit;
+	if (formalPoint.x < w->GetWidth())
+	{
+
+	}
+
+	// end solution
+	return {};
 }
