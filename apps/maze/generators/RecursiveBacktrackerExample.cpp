@@ -25,7 +25,7 @@ void RecursiveBacktrackerExample::Clear(World* world) {
 	//   top-left cell in formal units: stack.push_back({0, 0})
 	// begin solution
 
-	visited.clear();
+    visited.clear();
     stack.push_back({0, 0});
 
 	// end solution
@@ -57,25 +57,38 @@ bool RecursiveBacktrackerExample::Step(World* w) {
       return false;
 
 	// 1. mark it visited;
-	Point2D point = stack.front();
+	Point2D point = stack.back();
     auto m = std::map<int, bool>();
     m.insert({point.y, true});
     visited.insert({point.x, m});
 
+    std::cout << "Point is " << point.x << ", " << point.y << "\n";
+
 	// 2. list its visitable neighbors with getVisitables
 	auto visitable = getVisitables(w, point);
+    Point2D nextPoint;
+    Color color;
     if (visitable.size() <= 0) // 3. none -> dead end: pop the stack (backtrack);
+    {
+        color = Color(1, 0, 0);
+        w->SetNodeColor(point, color);
+        stack.pop_back();
         return false;
+    }
 	else if (visitable.size() == 1) // 4. exactly one -> move to it, do not consume a random number;
 	{
-        stack.push_back(visitable[0]);
+        color = Color(0, 1, 0);
+        w->SetNodeColor(point, color);
+        nextPoint = visitable[0];
 	}
 	else // 5. two or more -> consume SeededRandom::next() and pick
 	{
+        color = Color(0, 0, 1);
         int index = SeededRandom::next() % visitable.size();
-        Point2D newPoint = visitable[index];
-        stack.push_back(newPoint);
+        nextPoint = visitable[index];
 	}
+    w->SetNodeColor(w->ToWorldCoords(point), color);
+    stack.push_back(nextPoint);
 
 	return true;
 }
@@ -89,11 +102,79 @@ std::vector<Point2D> RecursiveBacktrackerExample::getVisitables(World* w, const 
 	// begin solution
 
 	std::vector<Point2D> returnVisit;
-	if (formalPoint.x < w->GetWidth())
-	{
+    if (formalPoint.y - 1 >= 0)
+    {
+        Point2D newPoint(formalPoint.x, formalPoint.y - 1);
 
+        auto it1 = visited.find(newPoint.x);
+        if (it1 != visited.end())
+        {
+            auto it2 = it1->second.find(newPoint.y);
+            if (it2 == it1->second.end())
+            {
+                returnVisit.push_back(newPoint);
+            }
+        }
+        else
+        {
+            returnVisit.push_back(newPoint);
+        }
+    }
+	if (formalPoint.x + 1 <= w->GetWidth())
+	{
+        Point2D newPoint(formalPoint.x + 1, formalPoint.y);
+
+        auto it1 = visited.find(newPoint.x);
+        if (it1 != visited.end())
+        {
+            auto it2 = it1->second.find(newPoint.y);
+            if (it2 == it1->second.end())
+            {
+                returnVisit.push_back(newPoint);
+            }
+        }
+        else
+        {
+            returnVisit.push_back(newPoint);
+        }
 	}
+    if (formalPoint.y + 1 <= w->GetHeight())
+    {
+        Point2D newPoint(formalPoint.x, formalPoint.y + 1);
+
+        auto it1 = visited.find(newPoint.x);
+        if (it1 != visited.end())
+        {
+            auto it2 = it1->second.find(newPoint.y);
+            if (it2 == it1->second.end())
+            {
+                returnVisit.push_back(newPoint);
+            }
+        }
+        else
+        {
+            returnVisit.push_back(newPoint);
+        }
+    }
+    if (formalPoint.x - 1 >= 0)
+    {
+        Point2D newPoint(formalPoint.x - 1, formalPoint.y);
+
+        auto it1 = visited.find(newPoint.x);
+        if (it1 != visited.end())
+        {
+            auto it2 = it1->second.find(newPoint.y);
+            if (it2 == it1->second.end())
+            {
+                returnVisit.push_back(newPoint);
+            }
+        }
+        else
+        {
+            returnVisit.push_back(newPoint);
+        }
+    }
 
 	// end solution
-	return {};
+	return returnVisit;
 }
