@@ -26,7 +26,18 @@ void RecursiveBacktrackerExample::Clear(World* world) {
 	// begin solution
 
     visited.clear();
+
+    for (int x = 0; x < world->GetWidth(); x++)
+    {
+        for (int y = 0; y < world->GetHeight(); y++)
+        {
+            visited[x].insert(std::make_pair(y, false));
+        }
+    }
+
     stack.push_back({0, 0});
+
+    SeededRandom::setIndex(0);
 
 	// end solution
 }
@@ -58,11 +69,7 @@ bool RecursiveBacktrackerExample::Step(World* w) {
 
 	// 1. mark it visited;
 	Point2D point = stack.back();
-    auto m = std::map<int, bool>();
-    m.insert({point.y, true});
-    visited.insert({point.x, m});
-
-    std::cout << "Point is " << point.x << ", " << point.y << "\n";
+    visited[point.x][point.y] = true;
 
 	// 2. list its visitable neighbors with getVisitables
 	auto visitable = getVisitables(w, point);
@@ -70,25 +77,44 @@ bool RecursiveBacktrackerExample::Step(World* w) {
     Color color;
     if (visitable.size() <= 0) // 3. none -> dead end: pop the stack (backtrack);
     {
-        color = Color(1, 0, 0);
-        w->SetNodeColor(point, color);
+        color = Color(0, 0, 0);
         stack.pop_back();
-        return false;
     }
 	else if (visitable.size() == 1) // 4. exactly one -> move to it, do not consume a random number;
 	{
-        color = Color(0, 1, 0);
-        w->SetNodeColor(point, color);
+        color = Color(1, 0, 0);
         nextPoint = visitable[0];
+        stack.push_back(nextPoint);
 	}
 	else // 5. two or more -> consume SeededRandom::next() and pick
 	{
-        color = Color(0, 0, 1);
+        color = Color(0.5, 0.5, 0.5);
         int index = SeededRandom::next() % visitable.size();
         nextPoint = visitable[index];
+        stack.push_back(nextPoint);
 	}
     w->SetNodeColor(w->ToWorldCoords(point), color);
-    stack.push_back(nextPoint);
+
+    if (visitable.size() > 0)
+    {
+        auto dir = std::make_pair(nextPoint.x - point.x, nextPoint.y - point.y);
+        if (dir.first == 0 && dir.second == -1) // Up
+        {
+            w->SetNorth(w->ToWorldCoords(point), false);
+        }
+        else if (dir.first == 0 && dir.second == 1) // Down
+        {
+            w->SetSouth(w->ToWorldCoords(point), false);
+        }
+        else if (dir.first == -1 && dir.second == 0) // Left
+        {
+            w->SetWest(w->ToWorldCoords(point), false);
+        }
+        else if (dir.first == 1 && dir.second == 0) // Right
+        {
+            w->SetEast(w->ToWorldCoords(point), false);
+        }
+    }
 
 	return true;
 }
@@ -106,52 +132,25 @@ std::vector<Point2D> RecursiveBacktrackerExample::getVisitables(World* w, const 
     {
         Point2D newPoint(formalPoint.x, formalPoint.y - 1);
 
-        auto it1 = visited.find(newPoint.x);
-        if (it1 != visited.end())
-        {
-            auto it2 = it1->second.find(newPoint.y);
-            if (it2 == it1->second.end())
-            {
-                returnVisit.push_back(newPoint);
-            }
-        }
-        else
+        if (!visited[formalPoint.x][formalPoint.y - 1])
         {
             returnVisit.push_back(newPoint);
         }
     }
-	if (formalPoint.x + 1 <= w->GetWidth())
+	if (formalPoint.x + 1 < w->GetWidth())
 	{
         Point2D newPoint(formalPoint.x + 1, formalPoint.y);
 
-        auto it1 = visited.find(newPoint.x);
-        if (it1 != visited.end())
-        {
-            auto it2 = it1->second.find(newPoint.y);
-            if (it2 == it1->second.end())
-            {
-                returnVisit.push_back(newPoint);
-            }
-        }
-        else
+        if (!visited[formalPoint.x + 1][formalPoint.y])
         {
             returnVisit.push_back(newPoint);
         }
 	}
-    if (formalPoint.y + 1 <= w->GetHeight())
+    if (formalPoint.y + 1 < w->GetHeight())
     {
         Point2D newPoint(formalPoint.x, formalPoint.y + 1);
 
-        auto it1 = visited.find(newPoint.x);
-        if (it1 != visited.end())
-        {
-            auto it2 = it1->second.find(newPoint.y);
-            if (it2 == it1->second.end())
-            {
-                returnVisit.push_back(newPoint);
-            }
-        }
-        else
+        if (!visited[formalPoint.x][formalPoint.y + 1])
         {
             returnVisit.push_back(newPoint);
         }
@@ -160,16 +159,7 @@ std::vector<Point2D> RecursiveBacktrackerExample::getVisitables(World* w, const 
     {
         Point2D newPoint(formalPoint.x - 1, formalPoint.y);
 
-        auto it1 = visited.find(newPoint.x);
-        if (it1 != visited.end())
-        {
-            auto it2 = it1->second.find(newPoint.y);
-            if (it2 == it1->second.end())
-            {
-                returnVisit.push_back(newPoint);
-            }
-        }
-        else
+        if (!visited[formalPoint.x - 1][formalPoint.y])
         {
             returnVisit.push_back(newPoint);
         }
