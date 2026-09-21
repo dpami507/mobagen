@@ -37,7 +37,7 @@ void RecursiveBacktrackerExample::Clear(World* world) {
 
     stack.push_back({0, 0});
 
-    SeededRandom::setIndex(0);
+    //SeededRandom::setIndex(0);
 
 	// end solution
 }
@@ -129,7 +129,7 @@ std::vector<Point2D> RecursiveBacktrackerExample::getVisitables(World* w, const 
 	// begin solution
 
 	std::vector<Point2D> returnVisit;
-    if (formalPoint.y - 1 >= 0)
+    if (formalPoint.y - 1 >= 0) // Up
     {
         Point2D newPoint(formalPoint.x, formalPoint.y - 1);
 
@@ -138,7 +138,7 @@ std::vector<Point2D> RecursiveBacktrackerExample::getVisitables(World* w, const 
             returnVisit.push_back(newPoint);
         }
     }
-	if (formalPoint.x + 1 < w->GetWidth())
+	if (formalPoint.x + 1 < w->GetWidth()) // Right
 	{
         Point2D newPoint(formalPoint.x + 1, formalPoint.y);
 
@@ -147,7 +147,7 @@ std::vector<Point2D> RecursiveBacktrackerExample::getVisitables(World* w, const 
             returnVisit.push_back(newPoint);
         }
 	}
-    if (formalPoint.y + 1 < w->GetHeight())
+    if (formalPoint.y + 1 < w->GetHeight()) // Down
     {
         Point2D newPoint(formalPoint.x, formalPoint.y + 1);
 
@@ -156,7 +156,7 @@ std::vector<Point2D> RecursiveBacktrackerExample::getVisitables(World* w, const 
             returnVisit.push_back(newPoint);
         }
     }
-    if (formalPoint.x - 1 >= 0)
+    if (formalPoint.x - 1 >= 0) // Left
     {
         Point2D newPoint(formalPoint.x - 1, formalPoint.y);
 

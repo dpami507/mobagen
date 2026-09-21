@@ -21,8 +21,10 @@ public:
     if (index > 100)
         index = 0;
 
+    int current = index;
     index++;
-    return randomNumbers[index];
+
+    return randomNumbers[current];
   }
 
   static void setIndex(uint8_t i) { index = i; }
