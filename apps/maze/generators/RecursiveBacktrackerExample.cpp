@@ -26,6 +26,7 @@ void RecursiveBacktrackerExample::Clear(World* world) {
 	// begin solution
 
     visited.clear();
+    stack.clear();
 
     for (int x = 0; x < world->GetWidth(); x++)
     {
