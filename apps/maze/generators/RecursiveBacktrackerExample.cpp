@@ -95,6 +95,7 @@ bool RecursiveBacktrackerExample::Step(World* w) {
 	}
     w->SetNodeColor(w->ToWorldCoords(point), color);
 
+    // If we moved set the wall we moved through to false
     if (visitable.size() > 0)
     {
         auto dir = std::make_pair(nextPoint.x - point.x, nextPoint.y - point.y);
