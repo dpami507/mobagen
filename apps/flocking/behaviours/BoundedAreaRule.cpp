@@ -3,13 +3,13 @@
 #include <glm/glm.hpp>
 #include <algorithm>
 
-glm::vec2 BoundedAreaRule::computeForce(const std::vector<BoidView>& neighborhood, const BoidView& boid) {
+glm::vec2 BoundedAreaRule::computeForce(const std::vector<BoidView>& boids, int selfIndex) {
   glm::vec2 force(0.f);
   glm::vec2 tempForce(0.f);
   float strength = 0.f;
 
   ImVec2 displaySize = ImGui::GetIO().DisplaySize;
-  // desiredDistance is the distance from the borders that the boids should try to maintain. 
+  // desiredDistance is the distance from the borders that the boids should try to maintain.
 
   // begin solution
   if (boid.position.x < desiredDistance)
