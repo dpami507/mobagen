@@ -29,6 +29,7 @@ public:
   virtual Point2D Move(CatWorld*) = 0;
 
   std::vector<Point2D> generatePath(CatWorld* w);
+  std::vector<Point2D> getVisitableNeightbors(CatWorld* w, Point2D p);
 };
 
 #endif  // AGENT_H
