@@ -1,8 +1,6 @@
 #include "Agent.h"
 #include <climits>
 #include <queue>
-#include <unordered_map>
-#include <unordered_set>
 #include "World.h"
 
 using namespace std;
@@ -34,18 +32,16 @@ std::vector<Point2D> Agent::generatePath(CatWorld* w) {
     auto current = frontier.front();
     // remove the current from frontierset
     frontierSet.erase(current);
+    frontier.pop();
     // mark current as visited
     visited[current] = true;
     // getVisitableNeightbors(world, current) returns a vector of neighbors that are not visited, not cat, not block, not in the queue
-    auto neighbors = getVisitableNeightbors(w, current);
+    auto neighbors = getVisitableNeightbors(w, current, frontierSet, visited);
     // iterate over the neighs:
     if (neighbors.size() == 0)
         continue;
     for (auto n : neighbors)
     {
-        if (visited.at(n) == true)
-            continue;
-
         // for every neighbor set the cameFrom
         cameFrom[n] = current;
 
@@ -60,7 +56,6 @@ std::vector<Point2D> Agent::generatePath(CatWorld* w) {
         borderExit = current;
         break;
     }
-    frontier.pop();
   }
 
   Point2D cursor = borderExit;
@@ -75,15 +70,20 @@ std::vector<Point2D> Agent::generatePath(CatWorld* w) {
   // if your vector is filled from the border to the cat, the first element is the catcher move, and the last element is the cat move
   return path;
 }
-
-std::vector<Point2D> Agent::getVisitableNeightbors(CatWorld* w, Point2D p)
+//returns a vector of neighbors that are not visited, not cat, not block, not in the queue
+std::vector<Point2D> Agent::getVisitableNeightbors(CatWorld* w, Point2D p, std::unordered_set<Point2D> f, std::unordered_map<Point2D, bool> v)
 {
     std::vector<Point2D> neighbors;
 
     for (auto pos : w->neighbors(p))
     {
-        // push back if its a valid move and there is no wall
-        if (w->isValidPosition(pos) && !w->getContent(pos))
+        // push back if
+        if (w->isValidPosition(pos) &&  // its a valid move
+            !w->getContent(pos) &&      // there is no wall
+            w->getCat() != pos &&       // the cat isn't there
+            v[pos] == false &&          // not visited
+            f.find(pos) == f.end()      // not in the frontier
+        )
             neighbors.push_back(pos);
     }
 

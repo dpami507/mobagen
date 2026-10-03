@@ -38,7 +38,7 @@ void RecursiveBacktrackerExample::Clear(World* world) {
 
     stack.push_back({0, 0});
 
-    //SeededRandom::setIndex(0);
+    SeededRandom::setIndex(0);
 
 	// end solution
 }
