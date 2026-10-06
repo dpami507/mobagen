@@ -11,11 +11,12 @@ Point2D Catcher::Move(CatWorld* world) {
         std::cout << "No Path found\n";
         return {};
     }
-    auto p = path.front();
 
-    std::cout << "Catcher ----------------\n";
-    std::cout << s << '\n';
-    std::cout << p.x << ", " << p.y << '\n';
+    // check through all points and see if there is one with one exit
+        // if there is, block in the cat
+    // if there isn't try and make one
+
+    auto p = path.back();
     auto cat = world->getCat();
 
     if (cat.x != p.x || cat.y != p.y && !world->getContent(p))
