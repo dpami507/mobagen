@@ -31,7 +31,7 @@ public:
   virtual Point2D Move(CatWorld*) = 0;
 
   std::vector<Point2D> generatePath(CatWorld* w);
-  std::vector<Point2D> getVisitableNeightbors(CatWorld* w, Point2D p, std::unordered_set<Point2D> f, std::unordered_map<Point2D, bool> v);
+  std::vector<Point2D> getVisitableNeightbors(CatWorld* w, const Point2D& p, const std::unordered_set<Point2D>& f, const std::unordered_map<Point2D, bool>& v);
 };
 
 #endif  // AGENT_H

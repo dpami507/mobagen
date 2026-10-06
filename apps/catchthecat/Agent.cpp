@@ -11,17 +11,22 @@ std::vector<Point2D> Agent::generatePath(CatWorld* w) {
   unordered_set<Point2D> frontierSet;        // OPTIMIZATION to check faster if a point is in the queue
   unordered_map<Point2D, bool> visited;      // use .at() to get data, if the element dont exist [] will give you wrong results
 
+  cameFrom.clear();
+  frontier = {};
+  frontierSet.clear();
+  visited.clear();
+
   // bootstrap state
   auto catPos = w->getCat();
   frontier.push(catPos);
   frontierSet.insert(catPos);
-  Point2D borderExit = {INT32_MAX, INT32_MAX};  // sentinel: no border found yet
+  std::optional<Point2D> borderExit;  // sentinel: no border found yet
 
   // set visited
-  visited.clear();
-  for (int i = -w->getWorldSideSize(); i < w->getWorldSideSize(); i++)
+  float halfSize = w->getWorldSideSize() / 2.0f;
+  for (int i = -halfSize; i < halfSize; i++)
   {
-      for (int j = -w->getWorldSideSize(); j < w->getWorldSideSize(); j++)
+      for (int j = -halfSize; j < halfSize; j++)
       {
           visited[Point2D(i, j)] = false;
       }
@@ -53,12 +58,16 @@ std::vector<Point2D> Agent::generatePath(CatWorld* w) {
     // do this up to find a visitable border and break the loop
     if (w->catWinsOnSpace(current))
     {
+        std::cout << "cat win found: " << current.x << ", " << current.y << "\n";
         borderExit = current;
         break;
     }
   }
 
-  Point2D cursor = borderExit;
+  if (!borderExit.has_value())
+      return {};
+
+  Point2D cursor = borderExit.value();
   std::vector<Point2D> path;
   while (cursor != catPos)
   {
@@ -71,7 +80,7 @@ std::vector<Point2D> Agent::generatePath(CatWorld* w) {
   return path;
 }
 //returns a vector of neighbors that are not visited, not cat, not block, not in the queue
-std::vector<Point2D> Agent::getVisitableNeightbors(CatWorld* w, Point2D p, std::unordered_set<Point2D> f, std::unordered_map<Point2D, bool> v)
+std::vector<Point2D> Agent::getVisitableNeightbors(CatWorld* w, const Point2D& p, const std::unordered_set<Point2D>& f, const std::unordered_map<Point2D, bool>& v)
 {
     std::vector<Point2D> neighbors;
 
@@ -81,10 +90,12 @@ std::vector<Point2D> Agent::getVisitableNeightbors(CatWorld* w, Point2D p, std::
         if (w->isValidPosition(pos) &&  // its a valid move
             !w->getContent(pos) &&      // there is no wall
             w->getCat() != pos &&       // the cat isn't there
-            v[pos] == false &&          // not visited
-            f.find(pos) == f.end()      // not in the frontier
-        )
+            v.at(pos) == false &&       // not visited
+            !f.contains(pos)            // not in the frontier
+            )
+        {
             neighbors.push_back(pos);
+        }
     }
 
     return neighbors;
