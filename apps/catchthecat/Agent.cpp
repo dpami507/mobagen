@@ -6,10 +6,10 @@
 using namespace std;
 
 std::vector<Point2D> Agent::generatePath(CatWorld* w) {
-  unordered_map<Point2D, Point2D> cameFrom;  // to build the flowfield and build the path
-  queue<Point2D> frontier;                   // to store next ones to visit
-  unordered_set<Point2D> frontierSet;        // OPTIMIZATION to check faster if a point is in the queue
-  unordered_map<Point2D, bool> visited;      // use .at() to get data, if the element dont exist [] will give you wrong results
+  unordered_map<Point2D, Point2D> cameFrom; // path
+  queue<Point2D> frontier;                  // aka open list
+  unordered_set<Point2D> frontierSet;       // also open list
+  unordered_map<Point2D, bool> visited;     //aka closed list
 
   cameFrom.clear();
   frontier = {};
@@ -18,23 +18,31 @@ std::vector<Point2D> Agent::generatePath(CatWorld* w) {
 
   // bootstrap state
   auto catPos = w->getCat();
+
+  // set up the frontier
   frontier.push(catPos);
   frontierSet.insert(catPos);
-  std::optional<Point2D> borderExit;  // sentinel: no border found yet
+  std::optional<Point2D> borderExit;
 
-  // set visited
+  // set up visited
   float halfSize = w->getWorldSideSize() / 2.0f;
   for (int i = -halfSize; i < halfSize; i++)
-  {
       for (int j = -halfSize; j < halfSize; j++)
-      {
           visited[Point2D(i, j)] = false;
-      }
-  }
 
   while (!frontier.empty()) {
     // get the current from frontier
     auto current = frontier.front();
+
+    // if we find a visitable border, break the loop
+    // early exit
+    if (w->catWinsOnSpace(current))
+    {
+        std::cout << "cat win found: " << current.x << ", " << current.y << "\n";
+        borderExit = current;
+        break;
+    }
+
     // remove the current from frontierset
     frontierSet.erase(current);
     frontier.pop();
@@ -53,14 +61,6 @@ std::vector<Point2D> Agent::generatePath(CatWorld* w) {
         // enqueue the neighbors to frontier and frontierset
         frontier.emplace(n);
         frontierSet.emplace(n);
-    }
-
-    // do this up to find a visitable border and break the loop
-    if (w->catWinsOnSpace(current))
-    {
-        std::cout << "cat win found: " << current.x << ", " << current.y << "\n";
-        borderExit = current;
-        break;
     }
   }
 
