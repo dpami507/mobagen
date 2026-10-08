@@ -1,13 +1,32 @@
 #include "Agent.h"
 #include <climits>
 #include <queue>
+#include <optional>
 #include "World.h"
+
+#include <algorithm>
+#include <random>
 
 using namespace std;
 
+struct Node
+{
+    Point2D point;
+    uint8_t hueristic;
+    bool operator()(const Node& a, const Node& b)
+    {
+        return (a.hueristic > b.hueristic);
+    }
+};
+
+float calcHeuristic(CatWorld* world, Point2D p)
+{
+    return min((world->getWorldSideSize()/2 - abs(p.x)), (world->getWorldSideSize()/2 - abs(p.y)));
+}
+
 std::vector<Point2D> Agent::generatePath(CatWorld* w) {
   unordered_map<Point2D, Point2D> cameFrom; // path
-  queue<Point2D> frontier;                  // aka open list
+  priority_queue<Node, std::vector<Node>, Node> frontier; // aka open list
   unordered_set<Point2D> frontierSet;       // also open list
   unordered_map<Point2D, bool> visited;     //aka closed list
 
@@ -20,7 +39,7 @@ std::vector<Point2D> Agent::generatePath(CatWorld* w) {
   auto catPos = w->getCat();
 
   // set up the frontier
-  frontier.push(catPos);
+  frontier.push({catPos, 0});
   frontierSet.insert(catPos);
   std::optional<Point2D> borderExit;
 
@@ -32,7 +51,7 @@ std::vector<Point2D> Agent::generatePath(CatWorld* w) {
 
   while (!frontier.empty()) {
     // get the current from frontier
-    auto current = frontier.front();
+    auto current = frontier.top().point;
 
     // if we find a visitable border, break the loop
     // early exit
@@ -59,7 +78,8 @@ std::vector<Point2D> Agent::generatePath(CatWorld* w) {
         cameFrom[n] = current;
 
         // enqueue the neighbors to frontier and frontierset
-        frontier.emplace(n);
+        float h = calcHeuristic(w, n);
+        frontier.push(Node(n, h));
         frontierSet.emplace(n);
     }
   }
@@ -84,7 +104,13 @@ std::vector<Point2D> Agent::getVisitableNeightbors(CatWorld* w, const Point2D& p
 {
     std::vector<Point2D> neighbors;
 
-    for (auto pos : w->neighbors(p))
+    std::random_device rd;
+    std::mt19937 g(rd());
+
+    auto neigs = w->neighbors(p);
+    std::shuffle(neigs.begin(), neigs.end(), g);
+
+    for (auto pos : neigs)
     {
         // push back if
         if (w->isValidPosition(pos) &&  // its a valid move
