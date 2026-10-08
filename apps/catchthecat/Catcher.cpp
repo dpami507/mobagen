@@ -76,6 +76,7 @@ Point2D Catcher::Move(CatWorld* world) {
 
     if (cat.x != nextPlacement.x || cat.y != nextPlacement.y && !world->getContent(nextPlacement))
     {
+        world->lastMove = nextPlacement;
         return nextPlacement;
     }
   }

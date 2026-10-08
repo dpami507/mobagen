@@ -14,5 +14,6 @@ Point2D Cat::Move(CatWorld* world) {
       return {};
   }
 
+  world->lastMove = path.back();
   return path.back();
 }
