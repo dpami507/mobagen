@@ -11,6 +11,22 @@ std::unordered_map<Point2D, std::function<std::vector<Point2D>(CatWorld* world, 
     {{Point2D(-1,  1)}, [](CatWorld* w, Point2D p) 
         { return std::vector<Point2D>({w->NE(p), w->NW(p), w->E(p), w->W(p), w->SE(p), w->SW(p)}); }},
 };
+
+Point2D getCorner(CatWorld* world)
+{
+    int halfSize = world->getWorldSideSize() / 2;
+    if (!world->getContent({halfSize, halfSize}))
+        return {halfSize, halfSize};
+    else if (!world->getContent({halfSize, -halfSize}))
+        return {halfSize, -halfSize};
+    else if (!world->getContent({-halfSize, -halfSize}))
+        return {-halfSize, -halfSize};
+    else if (!world->getContent({-halfSize, halfSize}))
+        return {-halfSize, halfSize};
+    else
+        return {0, 0};
+}
+
 Point2D getPointToCreateTunnel(CatWorld* world, const std::vector<Point2D>& path, const std::unordered_set<Point2D>& set)
 {
     Point2D first = path.back();
@@ -40,6 +56,24 @@ Point2D getPointToCreateTunnel(CatWorld* world, const std::vector<Point2D>& path
     return last;
 }
 
+bool canTrapCat(CatWorld* world, const Point2D& nextCatMove)
+{
+    int neighborCount = 0;
+    Point2D lastOpen;
+    for (int j = 0; j < 6; j++)
+    {
+        Point2D current = world->neighbors(nextCatMove)[j];
+        if (world->getContent(current))
+        {
+            lastOpen = current;
+            neighborCount++;
+        }
+    }
+    if (neighborCount == 5)
+        return true;
+    return false;
+}
+
 Point2D Catcher::Move(CatWorld* world) {
   auto side = world->getWorldSideSize() / 2;
   for (;;) {
@@ -64,15 +98,26 @@ Point2D Catcher::Move(CatWorld* world) {
     Point2D nextPlacement = predictedLast;
 
     bool found = false;
-
-    // make sure the cat wont win on its next move
-    if (world->catWinsOnSpace(predictedFirst))
-        nextPlacement = predictedFirst;
-    else
-        nextPlacement = getPointToCreateTunnel(world, path, pathSet);
-
-    if (nextPlacement == cat)
-        std::cout << "cat\n";
+    // block corners to start
+    if (dist >= 8)
+    {
+        Point2D p = getCorner(world);
+        if (p.x != 0 && p.y != 0)
+        {
+            nextPlacement = p;
+            found = true;
+        }
+    }
+    if (!found)
+    {
+        // make sure the cat wont win on its next move
+        if (world->catWinsOnSpace(predictedFirst))
+            nextPlacement = predictedFirst;
+        else if (canTrapCat(world, predictedFirst))
+            nextPlacement = predictedFirst;
+        else
+            nextPlacement = getPointToCreateTunnel(world, path, pathSet);
+    }
 
     if (cat.x != nextPlacement.x || cat.y != nextPlacement.y && !world->getContent(nextPlacement))
     {

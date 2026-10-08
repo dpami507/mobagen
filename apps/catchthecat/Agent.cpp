@@ -13,20 +13,21 @@ struct Node
 {
     Point2D point;
     uint8_t hueristic;
-    bool operator()(const Node& a, const Node& b)
-    {
-        return (a.hueristic > b.hueristic);
-    }
 };
+inline bool operator>(const Node& a, const Node& b)
+{
+    return (a.hueristic > b.hueristic);
+}
 
-float calcHeuristic(CatWorld* world, Point2D p)
+inline float calcHeuristic(CatWorld* world, Point2D p)
 {
     return min((world->getWorldSideSize()/2 - abs(p.x)), (world->getWorldSideSize()/2 - abs(p.y)));
 }
 
-std::vector<Point2D> Agent::generatePath(CatWorld* w) {
+std::vector<Point2D> Agent::generatePath(CatWorld* w)
+{
   unordered_map<Point2D, Point2D> cameFrom; // path
-  priority_queue<Node, std::vector<Node>, Node> frontier; // aka open list
+  priority_queue<Node, std::vector<Node>, std::greater<Node>> frontier; // aka open list
   unordered_set<Point2D> frontierSet;       // also open list
   unordered_map<Point2D, bool> visited;     //aka closed list
 
