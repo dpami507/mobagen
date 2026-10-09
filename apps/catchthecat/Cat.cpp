@@ -3,6 +3,9 @@
 #include <stdexcept>
 #include <optional>
 
+#include <algorithm>
+#include <random>
+
 #include <unordered_map>
 #include <unordered_set>
 #include <queue>
