@@ -1,6 +1,7 @@
 #include "Cat.h"
 #include "World.h"
 #include <stdexcept>
+#include <optional>
 
 #include <unordered_map>
 #include <unordered_set>
