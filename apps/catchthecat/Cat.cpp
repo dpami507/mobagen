@@ -36,7 +36,7 @@ inline bool operator>(const Node& a, const Node& b)
     return (a.hueristic > b.hueristic);
 }
 
-const int SEARCH_DIST = 3;
+const int SEARCH_DIST = 1;
 
 float calcCatHeuristic(CatWorld* world, Point2D p)
 {
